@@ -260,6 +260,12 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "lan_scanner",
+      "rootUri": "file:///C:/Users/frik/AppData/Local/Pub/Cache/hosted/pub.dev/lan_scanner-4.0.0+1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "leak_tracker",
       "rootUri": "file:///C:/Users/frik/AppData/Local/Pub/Cache/hosted/pub.dev/leak_tracker-11.0.2",
       "packageUri": "lib/",
