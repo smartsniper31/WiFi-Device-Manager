@@ -11,37 +11,46 @@ class NetworkScanner {
 
   /// Scanne le réseau local pour trouver les appareils actifs.
   /// Retourne un flux (Stream) de `Device` pour une mise à jour en temps réel de l'UI.
-  Stream<Device> scanDevices() async* {
-    final wifiIP = await _networkInfo.getWifiIP();
-    if (wifiIP == null) {
-      // Pas de connexion WiFi, on ne peut pas scanner.
-      // On pourrait lever une exception ou retourner un flux vide.
-      print("Erreur: Non connecté au WiFi.");
-      return;
-    }
+  Stream<Device> scanDevices() {
+    // On utilise un StreamController pour gérer manuellement le flux de données.
+    final controller = StreamController<Device>();
 
-    // Extrait le préfixe de l'adresse IP (ex: "192.168.1.")
-    final subnet = wifiIP.substring(0, wifiIP.lastIndexOf('.'));
+    // We wrap the logic in an async closure to handle the initial IP lookup.
+    () async {
+      final wifiIP = await _networkInfo.getWifiIP();
+      if (wifiIP == null) {
+        // No WiFi connection, close the stream and stop.
+        print("Erreur: Non connecté au WiFi.");
+        controller.close();
+        return;
+      }
 
-    // Nous allons lancer tous les pings en parallèle pour la vitesse.
-    final futures = <Future<void>>[];
+      // Extract the IP prefix (e.g., "192.168.1.")
+      final subnet = wifiIP.substring(0, wifiIP.lastIndexOf('.'));
+      final futures = <Future<void>>[];
 
-    // On scanne toutes les adresses de .1 à .254
-    for (var i = 1; i < 255; i++) {
-      final host = '$subnet.$i';
-      final ping = Ping(host, count: 1, timeout: 2);
+      // Scan all addresses from .1 to .254
+      for (var i = 1; i < 255; i++) {
+        final host = '$subnet.$i';
+        final ping = Ping(host, count: 1, timeout: 2);
 
-      // Nous utilisons un Completer pour gérer l'asynchronisme.
-      final completer = Completer<void>();
-      futures.add(completer.future);
+        // Use a Completer to know when each ping is finished.
+        final completer = Completer<void>();
+        futures.add(completer.future);
 
-      ping.stream.listen((event) {
-        if (event.summary != null && event.summary!.received > 0) {
-          // L'appareil a répondu ! On le produit dans le Stream.
-          yield Device(ip: host, isOnline: true);
-        }
-      }).onDone(() => completer.complete());
-    }
-    await Future.wait(futures); // Attend que tous les pings soient terminés.
+        ping.stream.listen((event) {
+          if (event.summary != null && event.summary!.received > 0) {
+            // The device responded! Add it to the stream via the controller.
+            controller.add(Device(ip: host, isOnline: true));
+          }
+        }).onDone(completer.complete);
+      }
+      // When all pings are complete...
+      await Future.wait(futures);
+      // ...close the stream to signal the end of the scan.
+      controller.close();
+    }(); // Immediately invoke the async closure.
+
+    return controller.stream; // On retourne immédiatement le stream.
   }
 }

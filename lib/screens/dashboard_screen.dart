@@ -19,8 +19,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   void initState() {
     super.initState();
     // Démarrer le scan après le premier build pour s'assurer que 'ref' est disponible.
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => _startScan(ref.read(networkScannerProvider)));
+    WidgetsBinding.instance.addPostFrameCallback((_) => _startScan());
   }
 
   void _startScan() {
