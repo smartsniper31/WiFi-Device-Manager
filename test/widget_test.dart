@@ -1,50 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wifi_device_manager/main.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:wifi_device_manager/models/device.dart';
 import 'package:wifi_device_manager/screens/dashboard_screen.dart';
+import 'package:wifi_device_manager/services/network_scanner.dart';
 
-// Ce fichier de test vérifie le comportement de notre écran principal.
+// Importe le fichier qui sera généré par mockito
+import 'widget_test.mocks.dart';
 
+// Annotation pour dire à mockito de créer une classe MockNetworkScanner
+@GenerateMocks([NetworkScanner])
 void main() {
   testWidgets('DashboardScreen affiche les appareils trouvés par le scan',
       (WidgetTester tester) async {
-    // ÉTAPE 1: Préparation
-    // Nous allons simuler un scan qui trouve deux appareils.
-    // Pour cela, nous ne pouvons pas utiliser le vrai NetworkScanner.
-    // Dans un vrai projet, nous utiliserions un framework de "mocking" comme Mockito
-    // ou nous injecterions le scanner via Riverpod pour le remplacer facilement.
-    // Pour rester simple ici, nous allons juste simuler l'état de l'UI.
+    // ÉTAPE 1: Préparation du Mock
+    // Crée une instance de notre faux scanner
+    final mockScanner = MockNetworkScanner();
 
-    // Pour ce test, nous allons directement construire le DashboardScreen.
-    // Note: Ce test est simplifié. Un test complet "mockerait" le NetworkScanner.
-    await tester.pumpWidget(const MyApp());
+    // Définit le comportement du faux scanner : quand on appelle scanDevices(),
+    // il retourne instantanément un Stream avec deux appareils.
+    when(mockScanner.scanDevices()).thenAnswer(
+      (_) => Stream.fromIterable([
+        const Device(ip: '192.168.1.10', hostname: 'PC-Bureau', isOnline: true),
+        const Device(ip: '192.168.1.25', hostname: 'Smart-TV', isOnline: true),
+      ]),
+    );
 
-    // ÉTAPE 2: Vérification de l'état initial
-    // Au début, le scan est en cours.
-    expect(find.text('Scan en cours, recherche des appareils...'), findsOneWidget);
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    // ÉTAPE 2: Construction de l'UI avec le Mock
+    // On "pompe" notre widget, mais en l'enveloppant dans un ProviderScope
+    // qui remplace le vrai scanner par notre faux scanner.
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          networkScannerProvider.overrideWithValue(mockScanner),
+        ],
+        child: const MaterialApp(home: DashboardScreen()),
+      ),
+    );
 
-    // Attendons la fin de la simulation du scan (quelques secondes).
-    // pumpAndSettle attend que toutes les animations et les microtâches soient terminées.
-    await tester.pumpAndSettle(const Duration(seconds: 5));
-
-    // ÉTAPE 3: Vérification de l'état final
-    // Une fois le scan terminé, le message de scan doit disparaître.
-    expect(find.text('Scan en cours, recherche des appareils...'), findsNothing);
-    expect(find.byType(CircularProgressIndicator), findsNothing);
+    // ÉTAPE 3: Vérifications
+    // Le scan est si rapide qu'on passe directement à l'état final.
+    // On attend que l'UI se mette à jour.
+    await tester.pumpAndSettle();
 
     // L'icône de rafraîchissement doit être visible.
-    expect(find.byIcon(Icons.refresh), findsOneWidget);
+    expect(find.byIcon(Icons.refresh), findsOneWidget,
+        reason: "L'icône de refresh doit être visible après le scan");
 
-    // Vérifions si au moins un appareil est affiché.
-    // Le test réussira si votre réseau local a au moins un appareil.
-    // C'est un test d'intégration plus qu'un test de widget pur.
-    expect(find.byType(ListTile), findsatLeastNWidgets(1));
-
-    // Exemple de vérification plus précise si on connaissait l'IP de notre propre appareil
-    // (ce qui est difficile à garantir dans un test).
-    // Par exemple, si on sait que 192.168.1.1 est le routeur :
-    // expect(find.text('192.168.1.1'), findsOneWidget);
+    // On vérifie que nos deux appareils sont bien affichés.
+    expect(find.byType(ListTile), findsNWidgets(2),
+        reason: "Doit afficher 2 appareils");
+    expect(find.text('PC-Bureau'), findsOneWidget);
+    expect(find.text('192.168.1.10'), findsOneWidget);
+    expect(find.text('Smart-TV'), findsOneWidget);
+    expect(find.text('192.168.1.25'), findsOneWidget);
   });
 }
