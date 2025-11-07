@@ -1,30 +1,50 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:wifi_device_manager/main.dart';
+import 'package:wifi_device_manager/models/device.dart';
+import 'package:wifi_device_manager/screens/dashboard_screen.dart';
+
+// Ce fichier de test vérifie le comportement de notre écran principal.
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('DashboardScreen affiche les appareils trouvés par le scan',
+      (WidgetTester tester) async {
+    // ÉTAPE 1: Préparation
+    // Nous allons simuler un scan qui trouve deux appareils.
+    // Pour cela, nous ne pouvons pas utiliser le vrai NetworkScanner.
+    // Dans un vrai projet, nous utiliserions un framework de "mocking" comme Mockito
+    // ou nous injecterions le scanner via Riverpod pour le remplacer facilement.
+    // Pour rester simple ici, nous allons juste simuler l'état de l'UI.
+
+    // Pour ce test, nous allons directement construire le DashboardScreen.
+    // Note: Ce test est simplifié. Un test complet "mockerait" le NetworkScanner.
     await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // ÉTAPE 2: Vérification de l'état initial
+    // Au début, le scan est en cours.
+    expect(find.text('Scan en cours, recherche des appareils...'), findsOneWidget);
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Attendons la fin de la simulation du scan (quelques secondes).
+    // pumpAndSettle attend que toutes les animations et les microtâches soient terminées.
+    await tester.pumpAndSettle(const Duration(seconds: 5));
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // ÉTAPE 3: Vérification de l'état final
+    // Une fois le scan terminé, le message de scan doit disparaître.
+    expect(find.text('Scan en cours, recherche des appareils...'), findsNothing);
+    expect(find.byType(CircularProgressIndicator), findsNothing);
+
+    // L'icône de rafraîchissement doit être visible.
+    expect(find.byIcon(Icons.refresh), findsOneWidget);
+
+    // Vérifions si au moins un appareil est affiché.
+    // Le test réussira si votre réseau local a au moins un appareil.
+    // C'est un test d'intégration plus qu'un test de widget pur.
+    expect(find.byType(ListTile), findsatLeastNWidgets(1));
+
+    // Exemple de vérification plus précise si on connaissait l'IP de notre propre appareil
+    // (ce qui est difficile à garantir dans un test).
+    // Par exemple, si on sait que 192.168.1.1 est le routeur :
+    // expect(find.text('192.168.1.1'), findsOneWidget);
   });
 }
