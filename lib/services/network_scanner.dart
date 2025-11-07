@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:dart_ping/dart_ping.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lan_scanner/lan_scanner.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import '../models/device.dart';
 
@@ -8,6 +9,7 @@ final networkScannerProvider = Provider((ref) => NetworkScanner());
 
 class NetworkScanner {
   final _networkInfo = NetworkInfo();
+  final _scanner = LanScanner();
 
   /// Scanne le réseau local pour trouver les appareils actifs.
   /// Retourne un flux (Stream) de `Device` pour une mise à jour en temps réel de l'UI.
@@ -18,6 +20,7 @@ class NetworkScanner {
     // We wrap the logic in an async closure to handle the initial IP lookup.
     () async {
       final wifiIP = await _networkInfo.getWifiIP();
+      final wifiIP = await NetworkInfo().getWifiIP();
       if (wifiIP == null) {
         // No WiFi connection, close the stream and stop.
         print("Erreur: Non connecté au WiFi.");
@@ -44,6 +47,17 @@ class NetworkScanner {
             controller.add(Device(ip: host, isOnline: true));
           }
         }).onDone(completer.complete);
+      // Le nouveau scanner gère tout pour nous !
+      final stream = _scanner.icmpScan(
+        subnet,
+        progressCallback: (progress) {
+          // On pourrait utiliser ça pour une barre de progression
+          // print('Scan progress: $progress');
+        },
+      );
+      
+      await for (final host in stream) {
+        controller.add(Device(ip: host.ip, hostname: host.hostname, mac: host.mac, isOnline: true));
       }
       // When all pings are complete...
       await Future.wait(futures);
@@ -52,5 +66,8 @@ class NetworkScanner {
     }(); // Immediately invoke the async closure.
 
     return controller.stream; // On retourne immédiatement le stream.
+    }();
+    
+    return controller.stream;
   }
 }

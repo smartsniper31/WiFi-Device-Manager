@@ -68,9 +68,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               itemBuilder: (context, index) {
                 final device = _devices[index];
                 return ListTile(
-                  leading: const Icon(Icons.computer), // Icône temporaire
-                  title: Text(device.hostname ?? device.ip),
-                  subtitle: Text(device.ip),
+                  leading: const Icon(Icons.devices),
+                  title: Text(device.hostname ?? 'Appareil inconnu'),
+                  subtitle: Text('${device.ip}\n${device.mac ?? 'MAC non disponible'}'),
                   trailing: Icon(
                     Icons.circle,
                     color: device.isOnline ? Colors.green : Colors.red,
