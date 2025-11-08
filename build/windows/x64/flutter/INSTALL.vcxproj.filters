@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\frik\Desktop\WiFi Commander\wifi_device_manager\build\windows\x64\CMakeFiles\d59c0923b65fcc20a04d6c49e52c42e3\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{2D0DC68C-1A7D-38FA-B815-D649C9B6A5EB}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

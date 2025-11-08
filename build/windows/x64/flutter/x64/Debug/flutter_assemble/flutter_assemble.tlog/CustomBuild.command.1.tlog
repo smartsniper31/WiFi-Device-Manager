@@ -1,0 +1,28 @@
+^C:\USERS\FRIK\DESKTOP\WIFI COMMANDER\WIFI_DEVICE_MANAGER\BUILD\WINDOWS\X64\CMAKEFILES\90B4383942DD5848A941FA09F3A5F408\FLUTTER_WINDOWS.DLL.RULE
+setlocal
+"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E env FLUTTER_ROOT=C:\Users\frik\Desktop\flutter\flutter "PROJECT_DIR=C:\Users\frik\Desktop\WiFi Commander\wifi_device_manager" FLUTTER_ROOT=C:\Users\frik\Desktop\flutter\flutter "FLUTTER_EPHEMERAL_DIR=C:\Users\frik\Desktop\WiFi Commander\wifi_device_manager\windows\flutter\ephemeral" "PROJECT_DIR=C:\Users\frik\Desktop\WiFi Commander\wifi_device_manager" "FLUTTER_TARGET=C:\Users\frik\Desktop\WiFi Commander\wifi_device_manager\lib\main.dart" DART_DEFINES=RkxVVFRFUl9WRVJTSU9OPTMuMzUuMw==,RkxVVFRFUl9DSEFOTkVMPXN0YWJsZQ==,RkxVVFRFUl9HSVRfVVJMPWh0dHBzOi8vZ2l0aHViLmNvbS9mbHV0dGVyL2ZsdXR0ZXIuZ2l0,RkxVVFRFUl9GUkFNRVdPUktfUkVWSVNJT049YTQwMmQ5YTQzNw==,RkxVVFRFUl9FTkdJTkVfUkVWSVNJT049ZGRmNDdkZDNmZg==,RkxVVFRFUl9EQVJUX1ZFUlNJT049My45LjI= DART_OBFUSCATION=false TRACK_WIDGET_CREATION=true TREE_SHAKE_ICONS=false "PACKAGE_CONFIG=C:\Users\frik\Desktop\WiFi Commander\wifi_device_manager\.dart_tool\package_config.json" C:/Users/frik/Desktop/flutter/flutter/packages/flutter_tools/bin/tool_backend.bat windows-x64 Debug
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\FRIK\DESKTOP\WIFI COMMANDER\WIFI_DEVICE_MANAGER\BUILD\WINDOWS\X64\CMAKEFILES\D59C0923B65FCC20A04D6C49E52C42E3\FLUTTER_ASSEMBLE.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\FRIK\DESKTOP\WIFI COMMANDER\WIFI_DEVICE_MANAGER\WINDOWS\FLUTTER\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" "-SC:/Users/frik/Desktop/WiFi Commander/wifi_device_manager/windows" "-BC:/Users/frik/Desktop/WiFi Commander/wifi_device_manager/build/windows/x64" --check-stamp-file "C:/Users/frik/Desktop/WiFi Commander/wifi_device_manager/build/windows/x64/flutter/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

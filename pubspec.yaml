@@ -15,7 +15,6 @@ dependencies:
   # Réseau
   network_info_plus: ^5.0.3
   dart_ping: ^9.0.1
-  lan_scanner: ^4.0.0+1
 
   # Base de données locale
   hive: ^2.2.3

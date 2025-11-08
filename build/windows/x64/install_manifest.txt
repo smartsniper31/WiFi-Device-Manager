@@ -1,0 +1,10 @@
+C:/Users/frik/Desktop/WiFi Commander/wifi_device_manager/build/windows/x64/runner/Debug/data/icudtl.dat
+C:/Users/frik/Desktop/WiFi Commander/wifi_device_manager/build/windows/x64/runner/Debug/flutter_windows.dll
+C:/Users/frik/Desktop/WiFi Commander/wifi_device_manager/build/windows/x64/runner/Debug/data/flutter_assets/AssetManifest.bin
+C:/Users/frik/Desktop/WiFi Commander/wifi_device_manager/build/windows/x64/runner/Debug/data/flutter_assets/AssetManifest.json
+C:/Users/frik/Desktop/WiFi Commander/wifi_device_manager/build/windows/x64/runner/Debug/data/flutter_assets/FontManifest.json
+C:/Users/frik/Desktop/WiFi Commander/wifi_device_manager/build/windows/x64/runner/Debug/data/flutter_assets/fonts/MaterialIcons-Regular.otf
+C:/Users/frik/Desktop/WiFi Commander/wifi_device_manager/build/windows/x64/runner/Debug/data/flutter_assets/kernel_blob.bin
+C:/Users/frik/Desktop/WiFi Commander/wifi_device_manager/build/windows/x64/runner/Debug/data/flutter_assets/NativeAssetsManifest.json
+C:/Users/frik/Desktop/WiFi Commander/wifi_device_manager/build/windows/x64/runner/Debug/data/flutter_assets/NOTICES.Z
+C:/Users/frik/Desktop/WiFi Commander/wifi_device_manager/build/windows/x64/runner/Debug/data/flutter_assets/shaders/ink_sparkle.frag

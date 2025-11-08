@@ -1,0 +1,10 @@
+^C:\USERS\FRIK\DESKTOP\WIFI COMMANDER\WIFI_DEVICE_MANAGER\BUILD\WINDOWS\X64\CMAKEFILES\5BFFC06A56E6E3D80C90EF659C0DE7A8\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" "-SC:/Users/frik/Desktop/WiFi Commander/wifi_device_manager/windows" "-BC:/Users/frik/Desktop/WiFi Commander/wifi_device_manager/build/windows/x64" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/Users/frik/Desktop/WiFi Commander/wifi_device_manager/build/windows/x64/wifi_device_manager.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
