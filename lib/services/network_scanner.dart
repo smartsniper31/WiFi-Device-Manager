@@ -33,6 +33,7 @@ class NetworkScanner {
         },
       );
       
+      // On utilise un type dynamique car le package n'exporte pas correctement son modèle.
       await for (final host in stream) {
         controller.add(Device(ip: host.ip, hostname: host.hostname, mac: host.mac, isOnline: true));
       }
